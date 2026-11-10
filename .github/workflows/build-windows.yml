@@ -1,0 +1,23 @@
+name: Build Windows VST3
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Configure
+        run: cmake -B build -A x64 -DVOX_FORMATS=VST3
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Upload VST3
+        uses: actions/upload-artifact@v5
+        with:
+          name: VonBerg-VoxFX-VST3-Windows
+          path: build/VonBergVoxFX_artefacts/Release/VST3/
